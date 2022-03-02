@@ -7,7 +7,7 @@ function TodoListItem({ todoList, onRemoveTodo }) {
     <ul>
       {todoList.map((item) => (
         <li className={style.ListItem}>
-          My id is: {item.id}My title is: {item.title}
+          My id is: {item.id}My title is: {item.fields.Title}
           
           <button className={style.spacing}
             onClick={() => {
