@@ -3,6 +3,7 @@ import AddTodoForm from "./components/AddTodoForm";
 import TodoList from "./components/TodoList";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import style from "./MyStyle.module.css"
+import Airtable from "airtable"
 //import Media from "react-media"
 //console.log(localStorage);
 //React.useEffect(() => {
@@ -10,6 +11,10 @@ import style from "./MyStyle.module.css"
 //}, []);
 
 console.log(process.env);
+const baseId = process.env.REACT_APP_AIRTABLE_BASE_ID;
+  const apiKey = process.env.REACT_APP_AIRTABLE_API_KEY;
+  const base = new Airtable({ apiKey: apiKey }).base(baseId);
+
 function App() {
   const [todoList, setTodoList] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
@@ -36,9 +41,28 @@ function App() {
     }
   }, [todoList, isLoading]);
   const addTodo = (newTodo) => {
-    setTodoList([...todoList, newTodo]);
+    
+    base('Default').create([
+      newTodo
+    ], function(err, records) {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      records.forEach(function (record) {
+        console.log(record.getId());
+      });
+      setTodoList([...todoList, records[0]]);
+    });
   };
   const removeTodo = (id) => {
+    base('Default').destroy([id], function(err, deletedRecords) {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      console.log('Deleted', deletedRecords.length, 'records');
+    });
     const newTodo = todoList.filter((item) => {
       return item.id !== id;
     });

@@ -2,12 +2,12 @@ import React from "react";
 import style from "./TodoListItem.module.css"
 import propTypes from "prop-types";
 function TodoListItem({ todoList, onRemoveTodo }) {
-  
+  console.log(todoList);
   return (
     <ul>
       {todoList.map((item) => (
         <li className={style.ListItem}>
-          My id is: {item.id}My title is: {item.fields.Title}
+          My id is: {item.id} My title is: {item.fields.title}
           
           <button className={style.spacing}
             onClick={() => {
