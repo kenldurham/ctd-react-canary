@@ -17,7 +17,7 @@ function AddTodoForm({ onAddTodo }) {
 
     console.log("todoTitle:", todoTitle);
     setTodoTitle("");
-    onAddTodo({ title: todoTitle, id: Date.now() });
+    onAddTodo({ fields:{title: todoTitle }});
   };
   return (
     <form onSubmit={handleAddTodo}>
